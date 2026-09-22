@@ -1,0 +1,38 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ArrowRight, ChevronDown, ChevronRight, CircleCheck, Clock3, FileText, LoaderCircle, Play, RotateCcw } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { getDocument, pipelineSteps, structureTree, type TreeNode } from "@/lib/formaflow-data";
+
+export const Route = createFileRoute("/analysis")({
+  validateSearch: (search: Record<string, unknown>) => ({ doc: typeof search.doc === "string" ? search.doc : "financial-report" }),
+  head: () => ({ meta: [{ title: "Structure Analysis — FormaFlow" }, { name: "description", content: "Watch FormaFlow detect structure and assemble a document transformation pipeline." }, { property: "og:title", content: "Structure Analysis — FormaFlow" }, { property: "og:description", content: "A live view of detected document structure and design pattern composition." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
+  component: AnalysisPage,
+});
+
+function TreeItem({ node, level = 0 }: { node: TreeNode; level?: number }) {
+  const [open, setOpen] = useState(level < 2);
+  const hasChildren = Boolean(node.children?.length);
+  return <div><button type="button" className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-xs transition-colors hover:bg-accent/70" style={{ paddingLeft: `${8 + level * 16}px` }} onClick={() => hasChildren && setOpen((value) => !value)}>{hasChildren ? (open ? <ChevronDown className="size-3 text-muted-foreground" /> : <ChevronRight className="size-3 text-muted-foreground" />) : <span className="size-3" />}<span className="min-w-0 flex-1 truncate text-foreground/85">{node.label}</span>{node.detail && <span className="ff-mono text-[9px] text-muted-foreground">{node.detail}</span>}<Badge variant="outline" className="ff-mono shrink-0 px-1.5 py-0 text-[9px] font-normal text-muted-foreground">{node.type}</Badge></button>{open && node.children?.map((child) => <TreeItem key={child.id} node={child} level={level + 1} />)}</div>;
+}
+
+function AnalysisPage() {
+  const navigate = useNavigate();
+  const { doc } = Route.useSearch();
+  const document = getDocument(doc);
+  const [visibleSteps, setVisibleSteps] = useState(0);
+  const [running, setRunning] = useState(true);
+
+  const startBuild = () => { setVisibleSteps(0); setRunning(true); };
+  useEffect(() => { if (!running) return; const timer = window.setInterval(() => setVisibleSteps((value) => { if (value >= pipelineSteps.length) { setRunning(false); return value; } return value + 1; }), 520); return () => window.clearInterval(timer); }, [running]);
+
+  return <div className="mx-auto max-w-7xl">
+    <div className="flex flex-wrap items-start justify-between gap-5"><div><div className="flex items-center gap-2"><Link to="/" className="ff-mono text-[11px] text-muted-foreground hover:text-foreground">UPLOAD</Link><ArrowRight className="size-3 text-muted-foreground" /><span className="ff-mono text-[11px] text-primary">ANALYSIS</span></div><h1 className="mt-5 text-3xl font-semibold tracking-[-0.03em]">Structure analysis</h1><p className="mt-2 text-sm text-muted-foreground">The engine is mapping your document into a transformation-ready model.</p></div><div className="flex items-center gap-2"><Button variant="outline" size="sm" onClick={startBuild}><RotateCcw /> Re-run scan</Button><Button size="sm" onClick={() => navigate({ to: "/preview", search: { doc } })} disabled={visibleSteps < pipelineSteps.length}><Play /> Open preview</Button></div></div>
+    <div className="mt-8 flex flex-wrap items-center gap-3 border-y border-border py-4"><div className="flex items-center gap-2"><FileText className="size-4 text-primary" /><span className="text-sm font-medium">{document.name}</span></div><Badge variant="secondary" className="ff-mono text-[10px]">{document.type}</Badge><span className="text-xs text-muted-foreground">{document.pages} pages · {document.size}</span><span className="ml-auto flex items-center gap-1.5 text-xs text-primary">{running ? <LoaderCircle className="size-3 animate-spin" /> : <CircleCheck className="size-3" />}{running ? `Building pipeline · ${visibleSteps}/${pipelineSteps.length}` : "Analysis complete"}</span></div>
+    <div className="mt-7 grid gap-5 xl:grid-cols-[350px_1fr]">
+      <section className="ff-panel min-h-[620px] rounded-lg p-4"><div className="flex items-center justify-between border-b border-border pb-4"><div><p className="ff-mono text-[10px] uppercase text-muted-foreground">Detected structure</p><p className="mt-1 text-sm font-medium">Document tree</p></div><Badge variant="outline" className="ff-mono text-[10px]">31 nodes</Badge></div><div className="pt-3">{structureTree.map((node) => <TreeItem key={node.id} node={node} />)}</div><div className="mt-6 border-t border-border pt-4"><p className="ff-mono text-[10px] uppercase text-muted-foreground">Pattern signals</p><div className="mt-3 flex flex-wrap gap-2"><Badge variant="secondary" className="ff-mono text-[10px]">nested tables</Badge><Badge variant="secondary" className="ff-mono text-[10px]">repeated blocks</Badge><Badge variant="secondary" className="ff-mono text-[10px]">sensitive fields</Badge></div></div></section>
+      <section className="ff-panel rounded-lg p-5 md:p-7"><div className="flex items-start justify-between gap-4"><div><p className="ff-mono text-[10px] uppercase text-muted-foreground">Live composition</p><h2 className="mt-1 text-xl font-semibold">Pipeline assembly</h2></div><div className="flex items-center gap-2 text-xs text-muted-foreground"><Clock3 className="size-3.5" /> simulated 2.8s</div></div><div className="mt-8 grid gap-0 md:grid-cols-2 xl:grid-cols-4">{pipelineSteps.map((step, index) => { const visible = index < visibleSteps; return <div key={step.id} className={`relative ${visible ? "ff-rise" : "invisible"}`} style={{ animationDelay: `${index * 50}ms` }}><div className="absolute left-5 top-10 hidden h-px w-[calc(100%-20px)] bg-border md:block xl:group-[&:nth-child(4n)]:hidden" /><div className="relative mx-2 mb-4 min-h-[180px] rounded-md border border-border bg-background/50 p-4 transition-colors hover:border-primary/50"><div className="flex items-center justify-between"><span className="ff-mono text-[10px] text-muted-foreground">{step.eyebrow}</span><span className={`size-2 rounded-full ${step.tone === "blue" ? "bg-primary" : step.tone === "teal" ? "bg-chart-2" : step.tone === "violet" ? "bg-chart-4" : "bg-chart-3"}`} /></div><p className="mt-7 text-sm font-semibold">{step.title}</p><p className="ff-mono mt-2 text-[10px] text-primary">{step.pattern}</p><p className="mt-3 text-xs leading-5 text-muted-foreground">{step.detail}</p></div></div>; })}</div>{visibleSteps === 0 && <div className="flex min-h-52 items-center justify-center text-sm text-muted-foreground"><LoaderCircle className="mr-2 size-4 animate-spin text-primary" />Initializing pattern detector…</div>}{!running && <div className="mt-5 flex items-center justify-between rounded-md border border-primary/25 bg-primary/5 px-4 py-3"><div className="flex items-center gap-2 text-sm"><CircleCheck className="size-4 text-primary" /> Pipeline assembled for {document.name}</div><Button variant="link" size="sm" onClick={() => navigate({ to: "/preview", search: { doc } })}>Continue to preview <ArrowRight /></Button></div>}</section>
+    </div>
+  </div>;
+}
