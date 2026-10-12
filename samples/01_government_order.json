@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "title": "GOVERNMENT OF NATIONAL CAPITAL TERRITORY OF DELHI",
+    "doc_type": "government_order",
+    "document_number": "G.O. Ms. No. 104/2026/FIN-EXP",
+    "department": "Finance (Expenditure) Department",
+    "jurisdiction": "Government of NCT of Delhi",
+    "date": "2026-10-12",
+    "classification": "unclassified",
+    "languages": ["en"],
+    "legal_basis": "Delhi Financial Rules, 2021 & Allocation of Business Rules",
+    "signatory_name": "Dr. Rajeshwar Sharma, IAS",
+    "signatory_designation": "Principal Secretary (Finance)",
+    "retention_years": 15
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "ORDER: SANCTION OF SPECIAL ADMINISTRATIVE AND DEVELOPMENT GRANT"
+    },
+    {
+      "type": "paragraph",
+      "text": "Sanction of the Competent Authority is hereby accorded in terms of Rule 21 of Delhi Financial Rules for the release and expenditure of capital funds amounting to INR 45,50,00,000/- (Rupees Forty-Five Crore Fifty Lakhs only) towards the Modernization of Municipal Administrative Infrastructure for the Financial Year 2026-27."
+    },
+    {
+      "type": "section",
+      "title": "HEAD OF ACCOUNT AND FINANCIAL ALLOCATION",
+      "number": "1.0",
+      "children": [
+        {
+          "type": "paragraph",
+          "text": "The expenditure sanctioned above shall be debitable to the detailed heads of accounts as categorized below:"
+        },
+        {
+          "type": "table",
+          "caption": "Statement of Component-wise Fund Allocation",
+          "headers": ["Sl No", "Major Head / Component", "Executing Agency", "Allocated Amount (INR Lakhs)"],
+          "rows": [
+            ["01", "4059-80-051 Civic Digital Transformation", "IT Infrastructure Directorate", "1,850.00"],
+            ["02", "4059-80-052 High-Speed Optical Fiber Ring", "Public Works Department", "1,500.00"],
+            ["03", "4059-80-053 Resilient Cloud Data Vaults", "National Informatics Center", "1,200.00"]
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "TERMS AND CONDITIONS",
+      "number": "2.0",
+      "children": [
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "The funds shall be utilized strictly for the specific purpose sanctioned and no diversion shall be permitted without prior concurrence of Finance Department.",
+            "Utilization Certificates (UC) in GFR-12A format must be furnished to the Principal Accountant General (Audit) within three months of closure of the financial quarter.",
+            "All procurement and contracting activities must strictly comply with the Government e-Marketplace (GeM) mandatory directives and CVC guidelines."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "callout_type": "advisory",
+      "citation": "[Finance Dept Memo No. 44/2026]",
+      "text": "Mandatory quarterly audit by the Directorate of Internal Audit is prescribed before release of subsequent tranche."
+    },
+    {
+      "type": "signature_block",
+      "name": "Dr. Rajeshwar Sharma, IAS",
+      "designation": "Principal Secretary to Government (Finance)",
+      "department": "Finance Department, Govt. of NCT of Delhi",
+      "date": "2026-10-12",
+      "digital_signed": true,
+      "sign_token": "NIC-PKI-DS-2026-DEL-89472"
+    }
+  ]
+}

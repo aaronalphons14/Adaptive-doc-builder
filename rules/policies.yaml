@@ -1,0 +1,40 @@
+version: "1.0"
+policies:
+  - id: "policy_dpdp_privacy"
+    name: "Digital Personal Data Protection & RTI Privacy Policy"
+    legal_basis: "Digital Personal Data Protection Act, 2023 & RTI Act 2005 Sec 8(1)(j)"
+    description: "Mandates automated redaction and zero unmasked PII in public or administrative outputs"
+    applicable_when: "features.sensitive_data_count > 0 or features.doc_type == 'rti_reply'"
+    mandatory_components:
+      - "RedactionDecorator"
+    verifier_rules:
+      check_zero_pii: true
+      prohibited_entities:
+        - "aadhaar"
+        - "pan"
+        - "phone"
+        - "email"
+        - "bank_account"
+    enforcement: "BLOCK"
+
+  - id: "policy_classification_watermark"
+    name: "National Security & Classified Document Protection Policy"
+    legal_basis: "Official Secrets Act & Government Security Manual"
+    description: "Mandates visible classification watermarking on all restricted, confidential, or secret outputs"
+    applicable_when: "features.classification in ['restricted', 'confidential', 'secret']"
+    mandatory_components:
+      - "WatermarkDecorator"
+    verifier_rules:
+      check_watermark: true
+    enforcement: "BLOCK"
+
+  - id: "policy_accessibility_gigw"
+    name: "Government Guidelines for Websites (GIGW 3.0) & WCAG AA Compliance"
+    legal_basis: "GIGW 3.0 Standard & Rights of Persons with Disabilities Act, 2016"
+    description: "Mandates accessible semantic markup, table headers, and structural hierarchy in HTML outputs"
+    applicable_when: "True"
+    mandatory_components:
+      - "AccessibilityDecorator"
+    verifier_rules:
+      check_accessibility: true
+    enforcement: "BLOCK"

@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "title": "PUBLIC CIRCULAR / सार्वजनिक परिपत्र",
+    "doc_type": "public_circular",
+    "document_number": "DIR/E-GOV/CIRCULAR/2026/18",
+    "department": "Directorate of Citizen e-Governance / नागरिक ई-गवर्नेंस निदेशालय",
+    "jurisdiction": "National Capital Region / राष्ट्रीय राजधानी क्षेत्र",
+    "date": "2026-10-12",
+    "classification": "unclassified",
+    "languages": ["en", "hi"],
+    "legal_basis": "Official Languages Act, 1963 & Citizen Charter Guidelines",
+    "signatory_name": "Alok Kumar, IAS / आलोक कुमार, भा.प्र.से.",
+    "signatory_designation": "Director of e-Governance / निदेशक (ई-गवर्नेंस)",
+    "retention_years": 7
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "STANDARDIZED OPERATING HOURS FOR CITIZEN FACILITATION CENTERS / नागरिक सुविधा केंद्रों के लिए मानकीकृत कार्य समय"
+    },
+    {
+      "type": "paragraph",
+      "text": "All Citizen Seva Kendras operating across the National Capital Region shall adhere strictly to the revised operating schedule with effect from 1st November 2026.",
+      "is_bilingual": true,
+      "secondary_text": "राष्ट्रीय राजधानी क्षेत्र में संचालित सभी नागरिक सेवा केंद्र 1 नवंबर 2026 से संशोधित कार्य समय-सारणी का कड़ाई से पालन करेंगे।"
+    },
+    {
+      "type": "section",
+      "title": "REVISED SCHEDULE OF PUBLIC SERVICES / नागरिक सेवाओं की संशोधित समय-सारणी",
+      "number": "1.0",
+      "children": [
+        {
+          "type": "table",
+          "caption": "Service Timings Schedule / सेवा समय अनुसूची",
+          "headers": ["Service Counter / सेवा पटल", "Operating Window / कार्य समय", "Token Cutoff / टोकन समाप्ति"],
+          "rows": [
+            [
+              "Revenue & Certificates / राजस्व एवं प्रमाण पत्र",
+              "09:00 AM – 01:30 PM",
+              "12:45 PM"
+            ],
+            [
+              "Social Welfare & Pensions / समाज कल्याण एवं पेंशन",
+              "02:00 PM – 05:30 PM",
+              "04:45 PM"
+            ],
+            [
+              "Grievance Redressal / जनशिकायत निवारण",
+              "10:00 AM – 04:00 PM",
+              "03:30 PM"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "MANDATORY CITIZEN GUIDELINES / नागरिकों के लिए अनिवार्य दिशानिर्देश",
+      "number": "2.0",
+      "children": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            "Senior citizens and differently-abled applicants shall receive priority green-channel tokens. / वरिष्ठ नागरिकों एवं दिव्यांग आवेदकों को प्राथमिकता ग्रीन-चैनल टोकन प्रदान किया जाएगा।",
+            "Zero facilitation fees shall be charged beyond statutory government challan rates. / वैधानिक सरकारी चालान दरों के अतिरिक्त कोई सुविधा शुल्क नहीं लिया जाएगा।",
+            "Digital grievance tracking is accessible 24x7 via the unified state citizen portal. / एकीकृत राज्य नागरिक पोर्टल के माध्यम से 24x7 डिजिटल शिकायत निवारण ट्रैकिंग उपलब्ध है।"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "signature_block",
+      "name": "Alok Kumar, IAS / आलोक कुमार, भा.प्र.से.",
+      "designation": "Director of e-Governance / निदेशक (ई-गवर्नेंस)",
+      "department": "Department of Administrative Reforms / प्रशासनिक सुधार विभाग",
+      "date": "2026-10-12",
+      "digital_signed": true,
+      "sign_token": "GOV-IN-DS-2026-HI-EN-908"
+    }
+  ]
+}

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoDoc-Gov | Self-Assembling Compliance Document Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --card-hover: #1e293b;
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #8b5cf6;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      line-height: 1.5;
+      padding-bottom: 5rem;
+    }
+
+    header.app-header {
+      background: linear-gradient(180deg, #111827 0%, rgba(17, 24, 39, 0.8) 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-emblem {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: white;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-badge {
+      font-size: 0.7rem;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60a5fa;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.825rem;
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+    }
+
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .panel-body {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-family: inherit;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    textarea {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.825rem;
+      min-height: 280px;
+      resize: vertical;
+      line-height: 1.4;
+    }
+
+    .controls-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #374151;
+    }
+
+    .dss-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .metric-card {
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-top: 0.2rem;
+    }
+
+    .mermaid-box {
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      min-height: 180px;
+      overflow-x: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .compliance-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+    }
+
+    .badge-pass {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .badge-warn {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+
+    .badge-fail {
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: #fb7185;
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 380px;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--card-border);
+      gap: 0.5rem;
+      padding: 0 1.25rem;
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .tab-content {
+      display: none;
+      flex: 1;
+    }
+
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    pre.report-box {
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      overflow: auto;
+      max-height: 360px;
+      white-space: pre-wrap;
+    }
+
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .audit-table th {
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      background: #0d131f;
+      color: var(--text-dim);
+      font-weight: 600;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .audit-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--card-border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+    }
+
+    .audit-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .hash-cell {
+      color: var(--accent-cyan);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo-emblem">AG</div>
+      <div>
+        <div class="brand-title">
+          AutoDoc-Gov
+          <span class="brand-badge">V1.0 Architecture</span>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-dim);">Self-Assembling Compliance-by-Construction Document Generator</div>
+      </div>
+    </div>
+    <div class="system-status">
+      <div class="status-pulse"></div>
+      <span>All 5 Mechanisms & 12 GoF Patterns Armed</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="grid-layout">
+
+      <!-- LEFT COLUMN: Input & Synthesis Plan -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📄 Document Ingestion & Runtime Analysis</span>
+          <span id="doc-type-indicator" class="badge badge-warn">Awaiting Input</span>
+        </div>
+
+        <div class="panel-body">
+          <div class="controls-row">
+            <div>
+              <label for="sample-select">Load Bundled Government Sample</label>
+              <select id="sample-select">
+                <option value="">-- Choose Sample Document --</option>
+              </select>
+            </div>
+            <div>
+              <label for="format-select">Target Output Format</label>
+              <select id="format-select">
+                <option value="html" selected>HTML (GIGW 3.0 / WCAG AA)</option>
+                <option value="pdf">PDF (WeasyPrint / ReportLab Indic)</option>
+                <option value="docx">DOCX (Python-docx)</option>
+                <option value="markdown">Markdown (AC4 Extension)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="controls-row">
+            <div>
+              <label for="approver-input">Approver Sign-off (Confidential/Secret)</label>
+              <input type="text" id="approver-input" placeholder="e.g. Officer-ID-88219" value="JointSecretary-Clearance-2026">
+            </div>
+            <div>
+              <label for="file-type-select">Source Syntax</label>
+              <select id="file-type-select">
+                <option value="json">JSON Structured</option>
+                <option value="md">Markdown</option>
+                <option value="txt">Plain Text</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="doc-content">Document Source Content</label>
+            <textarea id="doc-content" placeholder="Paste JSON, Markdown, or Plain Text document payload here..."></textarea>
+          </div>
+
+          <div class="btn-group">
+            <button id="btn-plan" class="btn-secondary">
+              ⚡ Synthesize Pipeline (Plan)
+            </button>
+            <button id="btn-generate" class="btn-primary">
+              🚀 Generate Compliant Document
+            </button>
+          </div>
+
+          <!-- DSS Feature Vector Cards -->
+          <div id="dss-container" style="display: none; margin-top: 1rem;">
+            <label>N1: Document Structure Signature (DSS)</label>
+            <div class="dss-metrics">
+              <div class="metric-card">
+                <div class="metric-label">Composite Nodes</div>
+                <div id="metric-nodes" class="metric-value">0</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Tree Depth</div>
+                <div id="metric-depth" class="metric-value">0</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Sensitive Entities</div>
+                <div id="metric-pii" class="metric-value" style="color: var(--accent-rose);">0</div>
+              </div>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem; word-break: break-all;">
+              <strong>SHA-256 Fingerprint:</strong> <span id="metric-hash" style="color: var(--accent-cyan); font-family: monospace;">-</span>
+            </div>
+          </div>
+
+          <!-- Mermaid Synthesis DAG -->
+          <div id="mermaid-container" style="display: none; margin-top: 1rem;">
+            <label>N2: Synthesized Execution DAG (Kahn's Topological Sort)</label>
+            <div id="mermaid-graph" class="mermaid-box"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Output Preview & Compliance Certification -->
+      <div class="panel">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tab-preview">Output Preview</button>
+          <button class="tab-btn" data-tab="tab-report">Assembly Report (N5)</button>
+          <button class="tab-btn" data-tab="tab-audit">Audit Hash Chain</button>
+        </div>
+
+        <div class="panel-body">
+
+          <!-- TAB 1: Preview -->
+          <div id="tab-preview" class="tab-content active">
+            <div id="compliance-badges" class="compliance-badges">
+              <span class="badge badge-pass">✓ System Ready</span>
+            </div>
+
+            <div id="action-download-row" style="display: none; justify-content: space-between; align-items: center;">
+              <span id="output-meta" style="font-size: 0.8rem; color: var(--text-muted);"></span>
+              <a id="btn-download" href="#" target="_blank" class="btn-secondary" style="text-decoration: none; padding: 0.4rem 0.85rem; font-size: 0.8rem;">
+                📥 Download Artifact
+              </a>
+            </div>
+
+            <iframe id="preview-iframe" class="preview-frame" title="Document Preview"></iframe>
+          </div>
+
+          <!-- TAB 2: Assembly Report -->
+          <div id="tab-report" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Self-Explaining Assembly Audit Record</span>
+              <span id="report-verified-badge" class="badge badge-pass">Tamper Evident</span>
+            </div>
+            <pre id="report-view" class="report-box">Run "Generate Compliant Document" to inspect decisions.</pre>
+          </div>
+
+          <!-- TAB 3: Cryptographic Audit Chain -->
+          <div id="tab-audit" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Cryptographic Hash Chain (SHA-256 Linked Blocks)</span>
+              <button id="btn-verify-chain" class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">
+                🔒 Verify Chain Integrity
+              </button>
+            </div>
+            <div id="chain-status-badge" style="margin-bottom: 0.75rem;"></div>
+            <div style="overflow-x: auto; max-height: 380px;">
+              <table class="audit-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Doc ID</th>
+                    <th>Format</th>
+                    <th>Verification</th>
+                    <th>Entry Hash (SHA-256)</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-table-body">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-dim);">No blocks recorded yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      AutoDoc-Gov Architecture &copy; 2026. Built with Python 3.11, FastAPI, Typer, Jinja2, ReportLab, WeasyPrint, and python-docx.
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+    let samplesData = [];
+
+    // Tab Switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Load bundled samples
+    async function initSamples() {
+      try {
+        const res = await fetch('/samples');
+        samplesData = await res.json();
+        const sel = document.getElementById('sample-select');
+        sel.innerHTML = '<option value="">-- Choose Sample Document --</option>';
+        samplesData.forEach((s, idx) => {
+          const opt = document.createElement('option');
+          opt.value = idx;
+          opt.textContent = `${idx + 1}. ${s.filename}`;
+          sel.appendChild(opt);
+        });
+
+        // Preload Sample 1 by default
+        if (samplesData.length > 0) {
+          loadSampleIndex(0);
+        }
+      } catch (err) {
+        console.error('Error fetching samples:', err);
+      }
+    }
+
+    function loadSampleIndex(idx) {
+      if (idx < 0 || idx >= samplesData.length) return;
+      const s = samplesData[idx];
+      document.getElementById('doc-content').value = s.content;
+      document.getElementById('file-type-select').value = s.suffix;
+      document.getElementById('doc-type-indicator').textContent = s.stem;
+      document.getElementById('sample-select').value = idx;
+    }
+
+    document.getElementById('sample-select').addEventListener('change', (e) => {
+      if (e.target.value !== '') {
+        loadSampleIndex(parseInt(e.target.value));
+      }
+    });
+
+    // Plan Pipeline
+    document.getElementById('btn-plan').addEventListener('click', async () => {
+      const content = document.getElementById('doc-content').value;
+      const fmt = document.getElementById('format-select').value;
+      const fileType = document.getElementById('file-type-select').value;
+
+      try {
+        const res = await fetch('/plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content, format: fmt, file_type: fileType })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Plan failed');
+
+        // Update DSS
+        document.getElementById('dss-container').style.display = 'block';
+        document.getElementById('metric-nodes').textContent = data.dss.node_count;
+        document.getElementById('metric-depth').textContent = data.dss.depth;
+        document.getElementById('metric-pii').textContent = data.dss.sensitive_data_count;
+        document.getElementById('metric-hash').textContent = data.dss.fingerprint;
+
+        // Render Mermaid
+        if (data.mermaid_diagram) {
+          const mContainer = document.getElementById('mermaid-container');
+          mContainer.style.display = 'block';
+          const graphDiv = document.getElementById('mermaid-graph');
+          graphDiv.removeAttribute('data-processed');
+          graphDiv.innerHTML = data.mermaid_diagram;
+          await mermaid.run({ nodes: [graphDiv] });
+        }
+      } catch (err) {
+        alert('Plan Error: ' + err.message);
+      }
+    });
+
+    // Generate Document
+    document.getElementById('btn-generate').addEventListener('click', async () => {
+      const content = document.getElementById('doc-content').value;
+      const fmt = document.getElementById('format-select').value;
+      const fileType = document.getElementById('file-type-select').value;
+      const approver = document.getElementById('approver-input').value;
+
+      try {
+        const res = await fetch('/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content, format: fmt, file_type: fileType, approver })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Generation failed');
+
+        // Compliance Badges
+        const badgesContainer = document.getElementById('compliance-badges');
+        badgesContainer.innerHTML = `
+          <span class="badge badge-pass">✓ DPDP Act Zero-PII: PASSED</span>
+          <span class="badge badge-pass">✓ GIGW 3.0 / WCAG AA: PASSED</span>
+          <span class="badge badge-pass">✓ Watermark & Signer: CERTIFIED</span>
+          <span class="badge badge-pass">✓ Audit Block #${data.audit_entry.index}: SEALED</span>
+        `;
+
+        // Output Preview
+        const iframe = document.getElementById('preview-iframe');
+        if (data.format === 'html' && data.content_preview) {
+          iframe.srcdoc = data.content_preview;
+        } else if (data.format === 'pdf' && data.binary_base64) {
+          iframe.src = `data:application/pdf;base64,${data.binary_base64}`;
+        } else {
+          iframe.srcdoc = `<pre style="font-family: monospace; padding: 20px;">${data.content_preview || 'Document compiled successfully.'}</pre>`;
+        }
+
+        // Download Action
+        const downRow = document.getElementById('action-download-row');
+        downRow.style.display = 'flex';
+        document.getElementById('output-meta').textContent = `Generated: ${data.filename} (${data.format.toUpperCase()})`;
+        document.getElementById('btn-download').href = data.download_url;
+
+        // Assembly Report
+        document.getElementById('report-view').textContent = data.assembly_report_markdown;
+
+        // Refresh Audit Log
+        loadAuditEntries();
+
+        // Switch to preview tab
+        document.querySelector('[data-tab="tab-preview"]').click();
+
+      } catch (err) {
+        alert('Compliance Block / Generation Error: ' + err.message);
+      }
+    });
+
+    // Load Audit Chain Entries
+    async function loadAuditEntries() {
+      try {
+        const res = await fetch('/audit/entries');
+        const entries = await res.json();
+        const tbody = document.getElementById('audit-table-body');
+        tbody.innerHTML = '';
+        if (entries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim);">No blocks recorded yet.</td></tr>';
+          return;
+        }
+        entries.forEach(e => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${e.index}</td>
+            <td>${e.document_id}</td>
+            <td>${e.output_format.toUpperCase()}</td>
+            <td><span class="badge badge-pass" style="padding: 0.1rem 0.4rem; font-size: 0.65rem;">PASS</span></td>
+            <td class="hash-cell" title="${e.entry_hash}">${e.entry_hash.substring(0, 16)}...</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Audit load error:', err);
+      }
+    }
+
+    // Verify Audit Chain
+    document.getElementById('btn-verify-chain').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/audit/verify');
+        const data = await res.json();
+        const badge = document.getElementById('chain-status-badge');
+        if (data.valid) {
+          badge.innerHTML = `<span class="badge badge-pass" style="width: 100%; justify-content: center; padding: 0.5rem;">🔒 Chain Verified Intact: All ${data.total_blocks} Blocks Validated via SHA-256 Linkage</span>`;
+        } else {
+          badge.innerHTML = `<span class="badge badge-fail" style="width: 100%; justify-content: center; padding: 0.5rem;">⚠️ Chain Compromised: ${data.message}</span>`;
+        }
+      } catch (err) {
+        alert('Verification error: ' + err.message);
+      }
+    });
+
+    // Initialize UI on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initSamples();
+      loadAuditEntries();
+    });
+  </script>
+</body>
+</html>

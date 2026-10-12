@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "title": "OFFICE OF THE PUBLIC INFORMATION OFFICER - RTI DISPOSAL REPLY",
+    "doc_type": "rti_reply",
+    "document_number": "RTI/PIO/REV/2026/0412",
+    "department": "Revenue and Land Records Department",
+    "jurisdiction": "District Collectorate, Pune",
+    "date": "2026-10-12",
+    "classification": "unclassified",
+    "languages": ["en"],
+    "legal_basis": "Right to Information Act, 2005 & Digital Personal Data Protection Act, 2023",
+    "signatory_name": "Smt. Vandana Deshmukh, Dy. Collector",
+    "signatory_designation": "State Public Information Officer (SPIO)",
+    "retention_years": 5
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "DISPOSAL OF FIRST APPLICATION UNDER SECTION 7(1) OF RTI ACT, 2005"
+    },
+    {
+      "type": "section",
+      "title": "1. PARTICULARS OF THE APPLICANT AND APPLICATION",
+      "number": "1.0",
+      "children": [
+        {
+          "type": "paragraph",
+          "text": "Applicant Name: Shri Rameshwar Dayal, Mobile: +91 9876543210, Email: rameshwar.dayal84@example.com."
+        },
+        {
+          "type": "paragraph",
+          "text": "Identity Credentials furnished with application: Resident Aadhaar No. 5489 2104 7832 and PAN No. ABCDE1234F."
+        },
+        {
+          "type": "paragraph",
+          "text": "Direct Benefit Transfer Account on file: State Bank of India A/C 987654321098, IFSC SBIN0004567."
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "2. POINT-WISE INFORMATION FURNISHED BY PUBLIC INFORMATION OFFICER",
+      "number": "2.0",
+      "children": [
+        {
+          "type": "paragraph",
+          "text": "Query 1: Provide certified inspection reports and survey maps of Survey No. 89/2A, Haveli Taluka for the years 2023-2025."
+        },
+        {
+          "type": "paragraph",
+          "text": "Reply to Query 1: The certified copies of Land Survey Cadastral Maps running into 14 folios are enclosed herewith upon realization of statutory fee of INR 28/- under RTI Rules."
+        },
+        {
+          "type": "paragraph",
+          "text": "Query 2: Furnish personal banking statements, Aadhaar biometric logs, and private contact phone numbers of third-party landowners registered under Survey No. 89/2B."
+        },
+        {
+          "type": "callout",
+          "callout_type": "statutory",
+          "citation": "[RTI Act 2005, Section 8(1)(j)]",
+          "text": "The information sought under Query 2 constitutes personal information, the disclosure of which has no relationship to any public activity or interest and would cause unwarranted invasion of privacy. Hence, the third-party identifiers (Aadhaar, bank records, personal phone numbers) are exempted from disclosure under Section 8(1)(j) of the RTI Act, 2005 read with Digital Personal Data Protection Act, 2023."
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "3. PARTICULARS OF FIRST APPELLATE AUTHORITY",
+      "number": "3.0",
+      "children": [
+        {
+          "type": "paragraph",
+          "text": "If aggrieved by this decision, an appeal may be preferred under Section 19(1) of the RTI Act within 30 days before the Additional District Magistrate & First Appellate Authority, Collector Office, Pune."
+        }
+      ]
+    },
+    {
+      "type": "signature_block",
+      "name": "Smt. Vandana Deshmukh, Dy. Collector",
+      "designation": "State Public Information Officer (SPIO)",
+      "department": "Revenue and Land Records Department",
+      "date": "2026-10-12",
+      "digital_signed": true,
+      "sign_token": "SPIO-PUNE-RTI-2026-V893"
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ metadata.title }}</title>
+  <style>
+    @font-face {
+      font-family: 'Noto Sans Devanagari';
+      src: local('Noto Sans Devanagari'), local('Nirmala UI');
+      unicode-range: U+0900-097F;
+    }
+    :root {
+      --gov-primary: #1e3a8a;
+      --gov-secondary: #0f766e;
+      --gov-text: #111827;
+      --gov-bg: #ffffff;
+      --gov-surface: #f8fafc;
+      --gov-border: #cbd5e1;
+      --gov-accent: #b45309;
+      --gov-danger: #dc2626;
+      --gov-success: #16a34a;
+    }
+    body {
+      font-family: 'Noto Sans Devanagari', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--gov-text);
+      background-color: var(--gov-bg);
+      line-height: 1.6;
+      margin: 0;
+      padding: 2.5rem;
+      position: relative;
+    }
+    .gov-page {
+      max-width: 850px;
+      margin: 0 auto;
+      border: 1px solid var(--gov-border);
+      padding: 3rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      background: white;
+      position: relative;
+    }
+    {% if watermark_text %}
+    .watermark-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-35deg);
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(220, 38, 38, 0.12);
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      white-space: nowrap;
+    }
+    {% endif %}
+    header.gov-header {
+      text-align: center;
+      border-bottom: 2px solid var(--gov-primary);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .gov-emblem-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gov-primary);
+      margin: 0.25rem 0;
+      letter-spacing: 0.02em;
+    }
+    .gov-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: #4b5563;
+      margin-top: 0.5rem;
+    }
+    h1 {
+      font-size: 1.25rem;
+      color: var(--gov-primary);
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    h2 {
+      font-size: 1.1rem;
+      color: var(--gov-primary);
+      border-bottom: 1px solid var(--gov-border);
+      padding-bottom: 0.25rem;
+      margin-top: 1.75rem;
+    }
+    p {
+      margin: 0.85rem 0;
+      text-align: justify;
+    }
+    .bilingual-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      background: var(--gov-surface);
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+    .bilingual-secondary {
+      color: #374151;
+      font-style: italic;
+    }
+    table.gov-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+      font-size: 0.9rem;
+    }
+    table.gov-table th, table.gov-table td {
+      border: 1px solid var(--gov-border);
+      padding: 0.6rem 0.85rem;
+      text-align: left;
+    }
+    table.gov-table th {
+      background-color: var(--gov-surface);
+      color: var(--gov-primary);
+      font-weight: 700;
+    }
+    caption {
+      caption-side: top;
+      font-weight: 700;
+      text-align: left;
+      margin-bottom: 0.5rem;
+      color: var(--gov-primary);
+    }
+    .callout-box {
+      border-left: 4px solid var(--gov-accent);
+      background-color: #fffbeb;
+      padding: 1rem;
+      margin: 1.25rem 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .callout-statutory {
+      border-left-color: var(--gov-secondary);
+      background-color: #f0fdfa;
+    }
+    .statutory-tag {
+      font-weight: 700;
+      color: var(--gov-secondary);
+    }
+    .signature-area {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .signature-card {
+      border: 1px dashed var(--gov-border);
+      padding: 1rem 1.5rem;
+      background: var(--gov-surface);
+      min-width: 250px;
+      text-align: right;
+    }
+    .digital-seal-badge {
+      display: inline-block;
+      background: #dcfce7;
+      color: var(--gov-success);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      margin-bottom: 0.5rem;
+    }
+    footer.gov-footer {
+      margin-top: 3rem;
+      border-top: 1px solid var(--gov-border);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="gov-page">
+    {% if watermark_text %}
+    <div class="watermark-overlay" id="watermark-overlay">{{ watermark_text }}</div>
+    {% endif %}
+
+    <header class="gov-header" role="banner">
+      <h1 class="gov-emblem-title">{{ metadata.title }}</h1>
+      <div class="gov-meta-row">
+        <span><strong>Ref No:</strong> {{ metadata.document_number or "N/A" }}</span>
+        <span><strong>Date:</strong> {{ metadata.date }}</span>
+      </div>
+      <div class="gov-meta-row">
+        <span>{{ metadata.department }}</span>
+        <span>{{ metadata.jurisdiction }}</span>
+      </div>
+    </header>
+
+    <main role="main">
+      {% for node in nodes %}
+        {% if node.block_type.value == "heading" %}
+          {% if node.level == 1 %}
+          <h2>{{ node.text }}</h2>
+          {% else %}
+          <h{{ node.level }}>{{ node.text }}</h{{ node.level }}>
+          {% endif %}
+
+        {% elif node.block_type.value == "section" %}
+          <section>
+            <h2>{{ node.section_number ~ " " if node.section_number else "" }}{{ node.title }}</h2>
+            {% for child in node.get_children() %}
+              {% if child.block_type.value == "paragraph" %}
+                {% if child.is_bilingual and child.secondary_text %}
+                <div class="bilingual-block">
+                  <div>{{ child.text }}</div>
+                  <div class="bilingual-secondary">{{ child.secondary_text }}</div>
+                </div>
+                {% else %}
+                <p>{{ child.text }}</p>
+                {% endif %}
+              {% elif child.block_type.value == "table" %}
+                <table class="gov-table">
+                  {% if child.caption %}<caption>{{ child.caption }}</caption>{% endif %}
+                  {% for row in child.get_rows() %}
+                  <tr>
+                    {% for cell in row.get_cells() %}
+                    {% if cell.is_header %}<th scope="col">{{ cell.text }}</th>{% else %}<td>{{ cell.text }}</td>{% endif %}
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </table>
+              {% elif child.block_type.value == "list" %}
+                {% if child.ordered %}<ol>{% else %}<ul>{% endif %}
+                {% for item in child.get_items() %}
+                <li>{{ item.text }}</li>
+                {% endfor %}
+                {% if child.ordered %}</ol>{% else %}</ul>{% endif %}
+              {% elif child.block_type.value == "callout" %}
+                <aside class="callout-box callout-{{ child.callout_type }}">
+                  {% if child.citation %}<span class="statutory-tag">{{ child.citation }}</span>{% endif %}
+                  <p>{{ child.text }}</p>
+                </aside>
+              {% endif %}
+            {% endfor %}
+          </section>
+
+        {% elif node.block_type.value == "paragraph" %}
+          {% if node.is_bilingual and node.secondary_text %}
+          <div class="bilingual-block">
+            <div>{{ node.text }}</div>
+            <div class="bilingual-secondary">{{ node.secondary_text }}</div>
+          </div>
+          {% else %}
+          <p>{{ node.text }}</p>
+          {% endif %}
+
+        {% elif node.block_type.value == "table" %}
+          <table class="gov-table">
+            {% if node.caption %}<caption>{{ node.caption }}</caption>{% endif %}
+            {% for row in node.get_rows() %}
+            <tr>
+              {% for cell in row.get_cells() %}
+              {% if cell.is_header %}<th scope="col">{{ cell.text }}</th>{% else %}<td>{{ cell.text }}</td>{% endif %}
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </table>
+
+        {% elif node.block_type.value == "list" %}
+          {% if node.ordered %}<ol>{% else %}<ul>{% endif %}
+          {% for item in node.get_items() %}
+          <li>{{ item.text }}</li>
+          {% endfor %}
+          {% if node.ordered %}</ol>{% else %}</ul>{% endif %}
+
+        {% elif node.block_type.value == "callout" %}
+          <aside class="callout-box callout-{{ node.callout_type }}">
+            {% if node.citation %}<span class="statutory-tag">{{ node.citation }}</span>{% endif %}
+            <p>{{ node.text }}</p>
+          </aside>
+
+        {% elif node.block_type.value == "signature_block" %}
+          <div class="signature-area">
+            <div class="signature-card">
+              {% if node.digital_signed %}
+              <div class="digital-seal-badge">Digitally Signed (Token: {{ node.sign_token }})</div>
+              {% else %}
+              <div class="digital-seal-badge">[Competent Authority]</div>
+              {% endif %}
+              <div style="font-weight: 700;">{{ node.signatory_name }}</div>
+              <div style="font-size: 0.85rem; color: #4b5563;">{{ node.designation }}</div>
+              <div style="font-size: 0.8rem; color: #6b7280;">{{ node.department }}</div>
+              <div style="font-size: 0.75rem; color: #9ca3af;">Date: {{ node.date or metadata.date }}</div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </main>
+
+    <footer class="gov-footer" role="contentinfo">
+      <span>AutoDoc-Gov Compliance Verified</span>
+      <span>Legal Basis: {{ metadata.legal_basis }}</span>
+      <span>Classification: {{ metadata.classification.value.upper() }}</span>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+version: "1.0"
+rules:
+  - id: "rule_pii_redaction"
+    description: "Enforce sensitive personal data redaction when PII entities are detected"
+    condition: "features.sensitive_data_count > 0"
+    priority: 100
+    components:
+      - stage_id: "RedactionDecorator"
+        stage_type: "decorator"
+        params:
+          mask_style: "partial_tail"
+          legal_basis: "Digital Personal Data Protection Act 2023 / RTI Act 2005"
+    dependencies:
+      - target: "CitationDecorator"
+        type: "runs_before" # Redaction must run before Citation
+      - target: "RendererStage"
+        type: "runs_before"
+
+  - id: "rule_classification_watermarking"
+    description: "Apply security classification watermark for restricted, confidential, or secret government documents"
+    condition: "features.classification in ['restricted', 'confidential', 'secret']"
+    priority: 90
+    components:
+      - stage_id: "WatermarkDecorator"
+        stage_type: "decorator"
+        params:
+          opacity: 0.15
+          color: "#dc2626"
+    dependencies:
+      - target: "RendererStage"
+        type: "runs_before"
+
+  - id: "rule_citation_preservation"
+    description: "Process statutory citations and legal references"
+    condition: "features.has_citations or features.citation_count > 0"
+    priority: 80
+    components:
+      - stage_id: "CitationDecorator"
+        stage_type: "decorator"
+        params:
+          highlight_statutory: true
+    dependencies:
+      - target: "RendererStage"
+        type: "runs_before"
+
+  - id: "rule_bilingual_layout"
+    description: "Activate bilingual parallel layout when multi-language metadata or bilingual paragraphs are present"
+    condition: "features.has_bilingual_content or len(features.languages) > 1"
+    priority: 75
+    components:
+      - stage_id: "BilingualDecorator"
+        stage_type: "decorator"
+        params:
+          primary_lang: "en"
+          secondary_lang: "hi"
+          layout_mode: "side_by_side"
+    dependencies:
+      - target: "RendererStage"
+        type: "runs_before"
+
+  - id: "rule_accessibility_tagging"
+    description: "Inject GIGW / WCAG AA semantic accessibility tagging, table scopes, and alt attributes"
+    condition: "True" # Mandatory baseline
+    priority: 70
+    components:
+      - stage_id: "AccessibilityDecorator"
+        stage_type: "decorator"
+        params:
+          wcag_level: "AA"
+          gigw_compliance: true
+    dependencies:
+      - target: "RendererStage"
+        type: "runs_before"
+
+  - id: "rule_page_numbering"
+    description: "Attach official government running page numbering and document reference header"
+    condition: "features.total_blocks > 5"
+    priority: 60
+    components:
+      - stage_id: "PageNumberingDecorator"
+        stage_type: "decorator"
+        params:
+          format: "Page {page} of {total}"
+    dependencies:
+      - target: "RendererStage"
+        type: "runs_before"
+
+  - id: "rule_format_html"
+    description: "Select HTML5 accessible semantic renderer family"
+    condition: "options.get('format') == 'html'"
+    priority: 50
+    components:
+      - stage_id: "HtmlRendererStage"
+        stage_type: "renderer"
+        params:
+          format: "html"
+    conflicts:
+      - "PdfRendererStage"
+      - "DocxRendererStage"
+      - "MarkdownRendererStage"
+    dependencies:
+      - target: "VerifierStage"
+        type: "runs_before"
+
+  - id: "rule_format_pdf"
+    description: "Select PDF document renderer family with Indic font and layout shaping"
+    condition: "options.get('format') == 'pdf'"
+    priority: 50
+    components:
+      - stage_id: "PdfRendererStage"
+        stage_type: "renderer"
+        params:
+          format: "pdf"
+    conflicts:
+      - "HtmlRendererStage"
+      - "DocxRendererStage"
+      - "MarkdownRendererStage"
+    dependencies:
+      - target: "VerifierStage"
+        type: "runs_before"
+
+  - id: "rule_format_docx"
+    description: "Select Microsoft Word (DOCX) administrative renderer family"
+    condition: "options.get('format') == 'docx'"
+    priority: 50
+    components:
+      - stage_id: "DocxRendererStage"
+        stage_type: "renderer"
+        params:
+          format: "docx"
+    conflicts:
+      - "HtmlRendererStage"
+      - "PdfRendererStage"
+      - "MarkdownRendererStage"
+    dependencies:
+      - target: "VerifierStage"
+        type: "runs_before"
+
+  - id: "rule_format_markdown"
+    description: "Select Markdown documentation renderer family (Open/Closed extension proof)"
+    condition: "options.get('format') == 'markdown'"
+    priority: 50
+    components:
+      - stage_id: "MarkdownRendererStage"
+        stage_type: "renderer"
+        params:
+          format: "markdown"
+    conflicts:
+      - "HtmlRendererStage"
+      - "PdfRendererStage"
+      - "DocxRendererStage"
+    dependencies:
+      - target: "VerifierStage"
+        type: "runs_before"
+
+  - id: "rule_output_verifier"
+    description: "Post-render verification stage: re-scans output artifact to prove zero unmasked PII, watermark presence, and accessibility"
+    condition: "True" # Non-negotiable verifier stage
+    priority: 10
+    components:
+      - stage_id: "VerifierStage"
+        stage_type: "verifier"
+        params:
+          strict_pii_check: true
+          block_on_violation: true
